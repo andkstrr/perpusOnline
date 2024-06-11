@@ -3,15 +3,16 @@
 session_start();
 $dataAwal = false;
 
-
 if (isset($_POST['btn-submit'])) {
     $nama = $_POST['nama'];
     $judul = $_POST['judul'];
     $tahun = $_POST['tahun'];
     $pengarang = $_POST['pengarang'];
     $tanggal = $_POST['tanggal'];
-    // $kembali = $_POST['tanggal'];
 
+    // Hitung tanggal kembali dengan menambahkan 3 hari
+    $tanggalPinjam = new DateTime($tanggal);
+    $tanggalKembali = $tanggalPinjam->add(new DateInterval('P3D'))->format('Y-m-d');
 
     if (isset($_SESSION['perpustakaan'])) {
         foreach ($_SESSION['perpustakaan'] as $data) {
@@ -29,6 +30,7 @@ if (isset($_POST['btn-submit'])) {
             "tahun" => $tahun,
             "pengarang" => $pengarang,
             "tanggal" => $tanggal,
+            "tanggalKembali" => $tanggalKembali,
         ];
     }
 }
@@ -42,6 +44,16 @@ if (isset($_POST['btn-submit'])) {
 <title>Perpustakaan</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    @media print {
+        .form-input, .button {
+            display: none;
+        }
+        .form-output {
+            display: block;
+        }
+    }
+</style>
 </head>
 <body>
 <div class="container mt-3">
@@ -52,7 +64,7 @@ if (isset($_POST['btn-submit'])) {
             <input class="form-control form-control-lg mb-3" type="text" name="judul" placeholder="Judul Buku" aria-label=".form-control-lg example" required>
             <input class="form-control form-control-lg mb-3" type="number" name="tahun" placeholder="Tahun Buku" aria-label=".form-control-lg example" required>
             <input class="form-control form-control-lg mb-3" type="text" name="pengarang" placeholder="Pengarang" aria-label=".form-control-lg example" required>
-            <input class="form-control form-control-lg mb-3" type="number" name="tanggal" placeholder="Tanggal Peminjaman" aria-label=".form-control-lg example" required>
+            <input class="form-control form-control-lg mb-3" type="date" name="tanggal" placeholder="Tanggal Peminjaman" aria-label=".form-control-lg example" required>
         </div>
         <div class="button mt-3">
             <button type="submit" class="btn btn-primary" name="btn-submit"><i class="fa-solid fa-address-book"></i> Submit</button>
@@ -64,7 +76,7 @@ if (isset($_POST['btn-submit'])) {
         <hr>
         <thead class="row align-items-start">
         <div class="container text-center">
-            <div class="row align-items-start" style="background-color: #F0F8FF;">
+            <div class="row align-items-start">
                 <div class="col">No</div>
                 <div class="col">Nama Peminjam</div>
                 <div class="col">Judul Buku</div>
@@ -81,18 +93,17 @@ if (isset($_POST['btn-submit'])) {
         <div class="container text-center">
         <?php
         $i = 1;
-        // $kembali = $_POST['tanggal'];
         if (isset($_SESSION['perpustakaan']) && is_array($_SESSION['perpustakaan'])) : 
             foreach ($_SESSION['perpustakaan'] as $key => $data) : ?>
-                <div class="row align-items-start">
+                <div class="row align-items-start mt-3">
                     <div class="col"><?=$i++?></div>
                     <div class="col"><?=htmlspecialchars($data['nama'])?></div>
                     <div class="col"><?=htmlspecialchars($data['judul'])?></div>
                     <div class="col"><?=htmlspecialchars($data['tahun'])?></div>
                     <div class="col"><?=htmlspecialchars($data['pengarang'])?></div>
                     <div class="col"><?=htmlspecialchars($data['tanggal'])?></div>
-                    <div class="col"></div>
-                    <div class="col"><a href="hapus.php?id=<?= $key; ?>"><button type="submit" class="btn btn-danger" name="btn-submit">Hapus</button></a></div>
+                    <div class="col"><?=htmlspecialchars($data['tanggalKembali'])?></div>
+                    <div class="col"><a href="hapus.php?id=<?= $key; ?>"><button type="submit" class="btn btn-danger" name="btn-delete">Hapus</button></a></div>
                     <hr class="mt-3">
                 </div>
             <?php endforeach; 
