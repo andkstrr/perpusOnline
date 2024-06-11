@@ -103,7 +103,7 @@ if (isset($_POST['btn-submit'])) {
                     <div class="col"><?=htmlspecialchars($data['pengarang'])?></div>
                     <div class="col"><?=htmlspecialchars($data['tanggal'])?></div>
                     <div class="col"><?=htmlspecialchars($data['tanggalKembali'])?></div>
-                    <div class="col"><a href="hapus.php?id=<?= $key; ?>"><button type="submit" class="btn btn-danger" name="btn-delete">Hapus</button></a></div>
+                    <div class="col"><a href="hapusData.php?id=<?= $key; ?>"><button type="submit" class="btn btn-danger" name="btn-delete">Hapus</button></a></div>
                     <hr class="mt-3">
                 </div>
             <?php endforeach; 
