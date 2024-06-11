@@ -78,7 +78,6 @@ if (isset($_POST['btn-submit'])) {
         <thead class="row align-items-start">
         <div class="container text-center">
             <div class="row align-items-start">
-                <div class="col">No</div>
                 <div class="col">Nama Peminjam</div>
                 <div class="col">Judul Buku</div>
                 <div class="col">Tahun Buku</div>   
@@ -93,11 +92,9 @@ if (isset($_POST['btn-submit'])) {
         <tbody>
         <div class="container text-center">
         <?php
-        $i = 1;
         if (isset($_SESSION['perpustakaan']) && is_array($_SESSION['perpustakaan'])) : 
             foreach ($_SESSION['perpustakaan'] as $key => $data) : ?>
                 <div class="row align-items-start mt-3">
-                    <div class="col"><?=$i++?></div>
                     <div class="col"><?=htmlspecialchars($data['nama'])?></div>
                     <div class="col"><?=htmlspecialchars($data['judul'])?></div>
                     <div class="col"><?=htmlspecialchars($data['tahun'])?></div>
