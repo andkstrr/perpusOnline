@@ -10,9 +10,9 @@ if (isset($_POST['btn-submit'])) {
     $pengarang = $_POST['pengarang'];
     $tanggal = $_POST['tanggal'];
 
-    // Hitung tanggal kembali dengan menambahkan 3 hari
+    // Hitung tanggal kembali dengan menambahkan 7 hari
     $tanggalPinjam = new DateTime($tanggal);
-    $tanggalKembali = $tanggalPinjam->add(new DateInterval('P3D'))->format('Y-m-d');
+    $tanggalKembali = $tanggalPinjam->add(new DateInterval('P7D'))->format('Y-m-d');
 
     if (isset($_SESSION['perpustakaan'])) {
         foreach ($_SESSION['perpustakaan'] as $data) {
