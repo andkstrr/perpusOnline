@@ -4,16 +4,19 @@ session_start();
 $dataAwal = false;
 
 if (isset($_POST['btn-submit'])) {
+    # Menambahkan data dari input
     $nama = $_POST['nama'];
     $judul = $_POST['judul'];
     $tahun = $_POST['tahun'];
     $pengarang = $_POST['pengarang'];
     $tanggal = $_POST['tanggal'];
 
-    // Hitung tanggal kembali dengan menambahkan 7 hari
+    # Hitung tanggal kembali dengan menambahkan 7 hari
     $tanggalPinjam = new DateTime($tanggal);
+    # [Plus 7 Day]
     $tanggalKembali = $tanggalPinjam->add(new DateInterval('P7D'))->format('Y-m-d');
 
+    # Pengecekan data sudah ada
     if (isset($_SESSION['perpustakaan'])) {
         foreach ($_SESSION['perpustakaan'] as $data) {
             if ($data['nama'] == $nama && $data['judul'] == $judul && $data['tahun'] == $tahun && $data['pengarang'] == $pengarang && $data['tanggal'] == $tanggal) {
@@ -23,6 +26,7 @@ if (isset($_POST['btn-submit'])) {
         }
     }
 
+    # Jika data masih kosong, menambahkan data ke array
     if (!$dataAwal) {
         $_SESSION['perpustakaan'][] = [
             "nama" => $nama,
